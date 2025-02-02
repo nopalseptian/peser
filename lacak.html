@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pelacakan Pesanan - Pésér</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Bootstrap Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+  />
+
+  <style>
+    :root {
+      --primary-color: #0d6efd;
+      --secondary-color: #6c757d;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    /* Navbar */
+    .navbar-brand {
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    /* Dropdown menu di-hover (layar >= 992px) */
+    .dropdown-menu {
+      display: none;
+    }
+    @media (min-width: 992px) {
+      .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 10px;
+      }
+    }
+
+    /* Main agar konten bisa tumbuh, footer tetap di bawah */
+    main {
+      flex: 1;
+    }
+
+    /* Style untuk halaman Pelacakan Pesanan */
+    .order-card {
+      transition: box-shadow 0.2s;
+      border-left: 4px solid;
+      border-radius: 4px;
+      background-color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .order-card.completed {
+      border-color: #28a745;
+    }
+    .order-card.cancelled {
+      border-color: #dc3545;
+    }
+    .product-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .status-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header / Navbar -->
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="#">Pésér</a>
+        <!-- Tombol Toggler -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu collapse -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <!-- Notifikasi -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="notifDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-bell"></i> Notifikasi
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="notifDropdown">
+                <li>
+                  <strong>Penyerahan 2 Kiriman</strong><br />
+                  Pesanan telah dikirim. Cek status!
+                </li>
+                <li class="border-top mt-2 pt-2">
+                  <strong>Harga di Bawah 100RB</strong><br />
+                  Diskon spesial hari ini!
+                </li>
+                <li class="text-center mt-2">
+                  <a class="dropdown-item" href="#">Tampilkan Semua</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Bantuan -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="helpDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-telephone"></i> Bantuan
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="helpDropdown">
+                <li><a href="#" class="dropdown-item">Email</a></li>
+                <li><a href="#" class="dropdown-item disabled">Telepon</a></li>
+              </ul>
+            </li>
+
+            <!-- Bahasa -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="langDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-globe"></i> Bahasa
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="langDropdown">
+                <li><a href="#" class="dropdown-item">Bahasa Indonesia</a></li>
+                <li>
+                  <a href="#" class="dropdown-item text-muted disabled"
+                    >English</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <!-- User -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-person-circle"></i> User
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="userDropdown">
+                <li><strong>Pembeli</strong></li>
+                <li><a class="dropdown-item" href="#">Pesanan Saya</a></li>
+                <li><strong>Penjual</strong></li>
+                <li><a class="dropdown-item" href="#">Manajemen Produk</a></li>
+                <li><strong>Admin</strong></li>
+                <li><a class="dropdown-item" href="#">Dashboard Admin</a></li>
+              </ul>
+            </li>
+
+            <!-- Keranjang -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="cartDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-cart"></i> Keranjang
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="cartDropdown">
+                <li><strong>Item 1</strong> - 2 pcs</li>
+                <li class="border-top mt-2 pt-2">
+                  <strong>Item 2</strong> - 1 pcs
+                </li>
+                <li class="text-center mt-2">
+                  <a class="dropdown-item" href="#">Lihat Semua</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.collapse -->
+      </div><!-- /.container -->
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="mt-4 mb-5">
+    <div class="container">
+      <h3 class="mb-4">Daftar Pesanan</h3>
+      
+      <!-- Filter Status -->
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-secondary active">Semua</button>
+            <button type="button" class="btn btn-outline-secondary">Belum Bayar</button>
+            <button type="button" class="btn btn-outline-secondary">Diproses</button>
+            <button type="button" class="btn btn-outline-secondary">Dikirim</button>
+            <button type="button" class="btn btn-outline-secondary">Selesai</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daftar Pesanan -->
+      <div class="row">
+        <!-- Pesanan 1 -->
+        <div class="col-md-12 mb-3">
+          <div class="card order-card completed">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <!-- Produk -->
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center">
+                    <img
+                      src="iphone13.jpg"
+                      class="product-image me-3"
+                      alt="iPhone 13"
+                    />
+                    <div>
+                      <h6>Apple iPhone 13 128GB</h6>
+                      <small class="text-muted">Varian: Midnight</small>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Status -->
+                <div class="col-md-3">
+                  <span class="badge bg-success">SELESAI</span>
+                  <small class="d-block mt-1">Diterima pada 25/03/2023</small>
+                </div>
+                
+                <!-- Total -->
+                <div class="col-md-3">
+                  <p class="mb-0 text-danger">Rp9.302.500</p>
+                </div>
+                
+                <!-- Aksi -->
+                <div class="col-md-2">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary btn-sm">Beli Lagi</button>
+                    <button class="btn btn-outline-secondary btn-sm">Hubungi Penjual</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pesanan 2 -->
+        <div class="col-md-12 mb-3">
+          <div class="card order-card cancelled">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center">
+                    <img
+                      src="kursi.jpg"
+                      class="product-image me-3"
+                      alt="Kursi"
+                    />
+                    <div>
+                      <h6>Kursi Santai Luar Ruangan</h6>
+                      <small class="text-muted"
+                        >Varian: Sofa+Pompa Elektrik</small
+                      >
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-3">
+                  <span class="badge bg-danger">DIBATALKAN</span>
+                  <small class="d-block mt-1"
+                    >Dibatalkan pada 17/02/2023</small
+                  >
+                </div>
+                
+                <div class="col-md-3">
+                  <p class="mb-0 text-danger">Rp217.834</p>
+                </div>
+                
+                <div class="col-md-2">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary btn-sm">Beli Lagi</button>
+                    <button class="btn btn-outline-secondary btn-sm">Detail Pengembalian</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pesanan 3 -->
+        <div class="col-md-12 mb-3">
+          <div class="card order-card">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center">
+                    <img
+                      src="timbangan.jpg"
+                      class="product-image me-3"
+                      alt="Timbangan"
+                    />
+                    <div>
+                      <h6>Timbangan Digital D11</h6>
+                      <small class="text-muted">Varian: Waterproof</small>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-3">
+                  <span class="badge bg-warning text-dark">DIKIRIM</span>
+                  <small class="d-block mt-1"
+                    >Estimasi tiba 30/04/2023</small
+                  >
+                </div>
+                
+                <div class="col-md-3">
+                  <p class="mb-0 text-danger">Rp190.022</p>
+                </div>
+                
+                <div class="col-md-2">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary btn-sm">Lacak</button>
+                    <button class="btn btn-outline-secondary btn-sm">Hubungi Penjual</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /Pesanan 3 -->
+      </div><!-- /row -->
+    </div><!-- /container -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-3 mt-auto">
+    <p>&copy; 2024 Pésér. Semua hak dilindungi.</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
+</body>
+</html>
