@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pésér - Marketplace Terpercaya di Indonesia</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Bootstrap Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+  />
+
+  <style>
+    /* Variabel Warna (opsional) */
+    :root {
+      --primary-color: #0d6efd;
+      --secondary-color: #6c757d;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    /* Main agar konten tumbuh, footer di bawah */
+    main {
+      flex: 1;
+    }
+
+    /* Navbar */
+    .navbar-brand {
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* Dropdown di-hover (layar >= lg) */
+    .dropdown-menu {
+      display: none;
+    }
+    @media (min-width: 992px) {
+      .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 10px;
+      }
+    }
+
+    /* Carousel */
+    .carousel-item {
+      height: 400px;
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(70%);
+    }
+    .carousel-caption h5,
+    .carousel-caption p {
+      color: #fff !important;
+    }
+    .carousel-caption h5 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .carousel-caption p {
+      font-size: 1.2rem;
+    }
+
+    /* Product Card */
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none !important;
+      position: relative; /* diperlukan jika ada badge position-absolute */
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    .product-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    /* Badge baru */
+    .seller-badge {
+      background-color: #ffc107;
+      color: #000;
+      font-weight: 600;
+      padding: 0.4rem 0.6rem;
+      border-radius: 5px;
+    }
+
+    .price-range {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    /* Search Bar (fixed di bawah) */
+    .search-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #ffffff;
+      padding: 10px 0;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+    }
+
+    #footer{
+        margin-bottom: 20px;
+    }
+
+    /* Responsif kecil */
+    @media (max-width: 768px) {
+      .carousel-item {
+        height: 300px;
+      }
+      .carousel-caption h5 {
+        font-size: 1.2rem;
+      }
+      .carousel-caption p {
+        font-size: 0.9rem;
+      }
+    }
+    @media (max-width: 576px) {
+      .carousel-caption h5 {
+        font-size: 1.2rem;
+      }
+      .carousel-caption p {
+        font-size: 1rem;
+      }
+    }
+
+    
+  </style>
+</head>
+
+<body>
+  <!-- Header / Navbar -->
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="#">Pésér</a>
+        <!-- Tombol Toggler -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu collapse -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto">
+            <!-- Notifikasi -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="notifDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-bell"></i> Notifikasi
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="notifDropdown">
+                <li>
+                  <strong>Penyerahan 2 Kiriman</strong><br />
+                  Pesanan telah dikirim. Cek status!
+                </li>
+                <li class="border-top mt-2 pt-2">
+                  <strong>Harga di Bawah 100RB</strong><br />
+                  Diskon spesial hari ini!
+                </li>
+                <li class="text-center mt-2">
+                  <a class="dropdown-item" href="#">Tampilkan Semua</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Bantuan -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="helpDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-telephone"></i> Bantuan
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="helpDropdown">
+                <li><a href="#" class="dropdown-item">Email</a></li>
+                <li><a href="#" class="dropdown-item disabled">Telepon</a></li>
+              </ul>
+            </li>
+
+            <!-- Bahasa -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="langDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-globe"></i> Bahasa
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="langDropdown">
+                <li><a href="#" class="dropdown-item">Bahasa Indonesia</a></li>
+                <li>
+                  <a href="#" class="dropdown-item text-muted disabled"
+                    >English</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <!-- User -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-person-circle"></i> User
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="userDropdown">
+                <li><strong>Pembeli</strong></li>
+                <li><a class="dropdown-item" href="#">Pesanan Saya</a></li>
+                <li><strong>Penjual</strong></li>
+                <li><a class="dropdown-item" href="#">Manajemen Produk</a></li>
+                <li><strong>Admin</strong></li>
+                <li><a class="dropdown-item" href="admin.html">Dashboard Admin</a></li>
+              </ul>
+            </li>
+
+            <!-- Keranjang -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="cartDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-cart"></i>
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="cartDropdown">
+                <li><strong>Item 1</strong> - 2 pcs</li>
+                <li class="border-top mt-2 pt-2">
+                  <strong>Item 2</strong> - 1 pcs
+                </li>
+                <li class="text-center mt-2">
+                  <a class="dropdown-item" href="#">Lihat Semua</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main content -->
+  <main class="py-4">
+    <!-- Carousel -->
+    <div class="container my-4">
+      <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <!-- Slide 1 -->
+          <div class="carousel-item active">
+            <img
+              src="/2.ControlFlow/gambar/iphone13ban.png"
+              class="d-block w-100"
+              alt="Gambar Carousel 1"
+            />
+            <div class="carousel-caption d-block">
+              <h5>Promo iPhone</h5>
+              <p>Dapatkan diskon spesial untuk iPhone hanya di Pésér!</p>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="carousel-item">
+            <img
+              src="/2.ControlFlow/gambar/kerudung.png"
+              class="d-block w-100"
+              alt="Gambar Carousel 2"
+            />
+            <div class="carousel-caption d-block">
+              <h5>Kerudung Fashion</h5>
+              <p>Tren terbaru kerudung cantik, tampil lebih percaya diri!</p>
+            </div>
+          </div>
+        </div>
+        <!-- Kontrol Carousel -->
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#mainCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#mainCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Daftar Produk di Bawah Carousel -->
+    <div class="container mb-5">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <!-- Product Card 1 -->
+        <div class="col">
+          <div class="card product-card h-100">
+            <span
+              class="badge seller-badge position-absolute top-0 start-0 m-2"
+              >Baru!!</span
+            >
+            <img
+              src="https://cworld.id/wp-content/uploads/2021/11/iPhone_13_Mini_PDP_Position-1A_Color_Pink__ID-scaled.jpg"
+              class="card-img-top img-fluid"
+              alt="iPhone 12"
+            />
+            <div class="card-body">
+              <h6 class="card-title">Apple iPhone 12 64GB</h6>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="price-range mb-0">Rp9.124.000</p>
+                  <small class="text-muted text-decoration-line-through"
+                    >Rp11.000.000</small
+                  >
+                </div>
+                <span class="badge bg-danger">20%</span>
+              </div>
+              <div class="mt-2">
+                <span class="text-success">✓ Gratis Ongkir</span>
+                <div class="d-flex justify-content-between mt-2">
+                  <small class="text-muted">1.2rb Terjual</small>
+                  <small class="text-warning">★★★★☆ (120)</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card 2 -->
+        <div class="col">
+          <div class="card product-card h-100">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7toD4rtdkbsUR50S1sHWsUnB_mokn4paKoA&s"
+              class="card-img-top img-fluid"
+              alt="iPhone 13"
+            />
+            <div class="card-body">
+              <h6 class="card-title">Apple iPhone 13 128GB</h6>
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="price-range mb-0">Rp14.500.000</p>
+                <span class="badge bg-danger">15%</span>
+              </div>
+              <div class="mt-2">
+                <span class="text-success">✓ COD Tersedia</span>
+                <div class="d-flex justify-content-between mt-2">
+                  <small class="text-muted">5rb+ Terjual</small>
+                  <small class="text-warning">★★★★★ (890)</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card 3 -->
+        <div class="col">
+          <div class="card product-card h-100">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7toD4rtdkbsUR50S1sHWsUnB_mokn4paKoA&s"
+              class="card-img-top img-fluid"
+              alt="iPhone 13"
+            />
+            <div class="card-body">
+              <h6 class="card-title">Apple iPhone 13 128GB</h6>
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="price-range mb-0">Rp14.500.000</p>
+                <span class="badge bg-danger">15%</span>
+              </div>
+              <div class="mt-2">
+                <span class="text-success">✓ COD Tersedia</span>
+                <div class="d-flex justify-content-between mt-2">
+                  <small class="text-muted">5rb+ Terjual</small>
+                  <small class="text-warning">★★★★★ (890)</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card 4 -->
+        <div class="col">
+          <div class="card product-card h-100">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7toD4rtdkbsUR50S1sHWsUnB_mokn4paKoA&s"
+              class="card-img-top img-fluid"
+              alt="iPhone 13"
+            />
+            <div class="card-body">
+              <h6 class="card-title">Apple iPhone 13 128GB</h6>
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="price-range mb-0">Rp14.500.000</p>
+                <span class="badge bg-danger">15%</span>
+              </div>
+              <div class="mt-2">
+                <span class="text-success">✓ COD Tersedia</span>
+                <div class="d-flex justify-content-between mt-2">
+                  <small class="text-muted">5rb+ Terjual</small>
+                  <small class="text-warning">★★★★★ (890)</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tambahkan lebih banyak Product Card jika diperlukan -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Search Bar (fixed di bawah) -->
+  <div class="search-bar text-center">
+    <input
+      type="text"
+      class="form-control w-50 d-inline"
+      placeholder="Cari produk..."
+    />
+    <button class="btn btn-primary">
+      <i class="bi bi-search"></i>
+    </button>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="bg-primary text-light text-center pb-5 mt-auto">
+    <p>&copy; 2024 Pésér. Semua hak dilindungi.</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
+</body>
+</html>
