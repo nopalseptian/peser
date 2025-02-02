@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pencarian Produk - Pésér</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Bootstrap Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+  />
+
+  <style>
+    /* Variabel warna (opsional) */
+    :root {
+      --primary-color: #0d6efd;
+      --secondary-color: #6c757d;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+      /* Tambahkan padding-bottom agar footer tidak tertutup search bar */
+      padding-bottom: 70px; /* sesuaikan jika search bar lebih tinggi */
+    }
+
+    /* Navbar */
+    .navbar-brand {
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* Dropdown menu di-hover (layar >= 992px) */
+    .dropdown-menu {
+      display: none; /* disembunyikan default */
+    }
+    @media (min-width: 992px) {
+      .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 10px;
+      }
+    }
+
+    /* Main agar konten bisa tumbuh, footer tetap di bawah */
+    main {
+      flex: 1;
+    }
+
+    /* BAGIAN FILTER, PRODUCT CARD, DLL. */
+    .filter-section {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .product-card {
+      transition: transform 0.2s;
+      position: relative; /* agar badge position-absolute bekerja */
+      border: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    .price-range {
+      color: #ff5722;
+      font-weight: bold;
+    }
+    .seller-badge {
+      background-color: #ffe600;
+      color: #000;
+    }
+
+    /* Search Bar di Bawah (fixed) */
+    .search-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+      padding: 10px 0;
+    }
+
+    /* Footer */
+    footer {
+      background: #f8f9fa;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="#">Pésér</a>
+        <!-- Tombol Toggler -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu collapse -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <!-- Notifikasi -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="notifDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-bell"></i> Notifikasi
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="notifDropdown">
+                <li>
+                  <strong>Penyerahan 2 Kiriman</strong><br />
+                  Pesanan telah dikirim. Cek status!
+                </li>
+                <li class="border-top mt-2 pt-2">
+                  <strong>Harga di Bawah 100RB</strong><br />
+                  Diskon spesial hari ini!
+                </li>
+                <li class="text-center mt-2">
+                  <a class="dropdown-item" href="#">Tampilkan Semua</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Bantuan -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="helpDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-telephone"></i> Bantuan
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="helpDropdown">
+                <li><a href="#" class="dropdown-item">Email</a></li>
+                <li><a href="#" class="dropdown-item disabled">Telepon</a></li>
+              </ul>
+            </li>
+
+            <!-- Bahasa -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="langDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-globe"></i> Bahasa
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="langDropdown">
+                <li><a href="#" class="dropdown-item">Bahasa Indonesia</a></li>
+                <li>
+                  <a href="#" class="dropdown-item text-muted disabled"
+                    >English</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <!-- User -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-person-circle"></i> User
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="userDropdown">
+                <li><strong>Pembeli</strong></li>
+                <li><a class="dropdown-item" href="#">Pesanan Saya</a></li>
+                <li><strong>Penjual</strong></li>
+                <li><a class="dropdown-item" href="#">Manajemen Produk</a></li>
+                <li><strong>Admin</strong></li>
+                <li><a class="dropdown-item" href="#">Dashboard Admin</a></li>
+              </ul>
+            </li>
+
+            <!-- Keranjang -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="cartDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-cart"></i> Keranjang
+              </a>
+              <ul class="dropdown-menu p-3" aria-labelledby="cartDropdown">
+                <li><strong>Item 1</strong> - 2 pcs</li>
+                <li class="border-top mt-2 pt-2">
+                  <strong>Item 2</strong> - 1 pcs
+                </li>
+                <li class="text-center mt-2">
+                  <a class="dropdown-item" href="#">Lihat Semua</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.collapse -->
+      </div><!-- /.container -->
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="py-4">
+    <div class="container mt-4">
+      <div class="row">
+        <!-- Filter Section -->
+        <div class="col-md-3 mb-4">
+          <div class="filter-section">
+            <h5>Filter</h5>
+            
+            <!-- Location Filter -->
+            <div class="mb-3">
+              <label class="form-label">Lokasi</label>
+              <select class="form-select">
+                <option>Jabodetabek</option>
+                <option>Jawa Barat</option>
+                <option>Banten</option>
+              </select>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="mb-3">
+              <label class="form-label">Rentang Harga</label>
+              <div class="d-flex justify-content-between">
+                <input
+                  type="number"
+                  class="form-control me-2"
+                  placeholder="Min"
+                />
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="Max"
+                />
+              </div>
+            </div>
+
+            <!-- Seller Type -->
+            <div class="mb-3">
+              <label class="form-label">Tipe Penjual</label>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="mall" />
+                <label class="form-check-label" for="mall">Mall</label>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="mb-3">
+              <label class="form-label">Metode Pembayaran</label>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="cod" />
+                <label class="form-check-label" for="cod">COD</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content (Products) -->
+        <div class="col-md-9">
+          <!-- Sorting -->
+          <div class="d-flex justify-content-between mb-4">
+            <span>Menampilkan 1.000+ hasil untuk "iphone"</span>
+            <select class="form-select w-25">
+              <option>Terbaru</option>
+              <option>Terlaris</option>
+              <option>Harga Tertinggi</option>
+              <option>Harga Terendah</option>
+            </select>
+          </div>
+
+          <!-- Product Grid -->
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <!-- Product Card 1 -->
+            <div class="col">
+              <div class="card product-card h-100">
+                <span
+                  class="badge seller-badge position-absolute top-0 start-0 m-2"
+                  >Baru!!</span
+                >
+                <img
+                  src="https://cworld.id/wp-content/uploads/2021/11/iPhone_13_Mini_PDP_Position-1A_Color_Pink__ID-scaled.jpg"
+                  class="card-img-top img-fluid"
+                  alt="iPhone 12"
+                />
+                <div class="card-body">
+                  <h6 class="card-title">Apple iPhone 12 64GB</h6>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <p class="price-range mb-0">Rp9.124.000</p>
+                      <small class="text-muted text-decoration-line-through"
+                        >Rp11.000.000</small
+                      >
+                    </div>
+                    <span class="badge bg-danger">20%</span>
+                  </div>
+                  <div class="mt-2">
+                    <span class="text-success">✓ Gratis Ongkir</span>
+                    <div class="d-flex justify-content-between mt-2">
+                      <small class="text-muted">1.2rb Terjual</small>
+                      <small class="text-warning">★★★★☆ (120)</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="col">
+              <div class="card product-card h-100">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7toD4rtdkbsUR50S1sHWsUnB_mokn4paKoA&s"
+                  class="card-img-top img-fluid"
+                  alt="iPhone 13"
+                />
+                <div class="card-body">
+                  <h6 class="card-title">Apple iPhone 13 128GB</h6>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <p class="price-range mb-0">Rp14.500.000</p>
+                    <span class="badge bg-danger">15%</span>
+                  </div>
+                  <div class="mt-2">
+                    <span class="text-success">✓ COD Tersedia</span>
+                    <div class="d-flex justify-content-between mt-2">
+                      <small class="text-muted">5rb+ Terjual</small>
+                      <small class="text-warning">★★★★★ (890)</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="col">
+              <div class="card product-card h-100">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7toD4rtdkbsUR50S1sHWsUnB_mokn4paKoA&s"
+                  class="card-img-top img-fluid"
+                  alt="iPhone 13"
+                />
+                <div class="card-body">
+                  <h6 class="card-title">Apple iPhone 13 128GB</h6>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <p class="price-range mb-0">Rp14.500.000</p>
+                    <span class="badge bg-danger">15%</span>
+                  </div>
+                  <div class="mt-2">
+                    <span class="text-success">✓ COD Tersedia</span>
+                    <div class="d-flex justify-content-between mt-2">
+                      <small class="text-muted">5rb+ Terjual</small>
+                      <small class="text-warning">★★★★★ (890)</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="col">
+              <div class="card product-card h-100">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7toD4rtdkbsUR50S1sHWsUnB_mokn4paKoA&s"
+                  class="card-img-top img-fluid"
+                  alt="iPhone 13"
+                />
+                <div class="card-body">
+                  <h6 class="card-title">Apple iPhone 13 128GB</h6>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <p class="price-range mb-0">Rp14.500.000</p>
+                    <span class="badge bg-danger">15%</span>
+                  </div>
+                  <div class="mt-2">
+                    <span class="text-success">✓ COD Tersedia</span>
+                    <div class="d-flex justify-content-between mt-2">
+                      <small class="text-muted">5rb+ Terjual</small>
+                      <small class="text-warning">★★★★★ (890)</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tambahkan lebih banyak Product Card jika diperlukan -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Search Bar di Bawah -->
+  <div class="search-bar text-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-8 col-md-6">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Cari 'iphone'..."
+              aria-label="Pencarian Produk"
+            />
+            <button class="btn btn-primary">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-3 mt-auto">
+    <p>&copy; 2024 Pésér. Semua hak dilindungi.</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
+</body>
+</html>
